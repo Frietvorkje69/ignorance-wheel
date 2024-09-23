@@ -1,0 +1,58 @@
+[
+  {
+    "id": 1,
+    "name": "Luke",
+    "aliveSprite": "/img/sprites/luke/lukeAlive.png",
+    "deadSprite": "/img/sprites/luke/lukeDead.png",
+    "legacyAliveSprite": "/img/sprites/luke/legacyLukeAlive.png",
+    "legacyDeadSprite": "/img/sprites/luke/legacyLukeDead.png"
+  },
+  {
+    "id": 2,
+    "name": "Raymond",
+    "aliveSprite": "/img/sprites/raymond/rayAlive.png",
+    "deadSprite": "/img/sprites/raymond/rayDead.png",
+    "legacyAliveSprite": "/img/sprites/raymond/legacyRayAlive.png",
+    "legacyDeadSprite": "/img/sprites/raymond/legacyRayDead.png"
+  },
+  {
+    "id": 3,
+    "name": "Neelesh",
+    "aliveSprite": "/img/sprites/neelesh/neeleshAlive.png",
+    "deadSprite": "/img/sprites/neelesh/neeleshDead.png",
+    "legacyAliveSprite": "/img/sprites/neelesh/legacyNeeleshAlive.png",
+    "legacyDeadSprite": "/img/sprites/neelesh/legacyNeeleshDead.png"
+  },
+  {
+    "id": 4,
+    "name": "Kevin",
+    "aliveSprite": "/img/sprites/kevin/kevinAlive.png",
+    "deadSprite": "/img/sprites/kevin/kevinDead.png",
+    "legacyAliveSprite": "/img/sprites/kevin/legacyKevinAlive.png",
+    "legacyDeadSprite": "/img/sprites/kevin/legacyKevinDead.png"
+  },
+  {
+    "id": 5,
+    "name": "Anthony",
+    "aliveSprite": "/img/sprites/anthony/antAlive.png",
+    "deadSprite": "/img/sprites/anthony/antDead.png",
+    "legacyAliveSprite": "/img/sprites/anthony/legacyAnthonyAlive.png",
+    "legacyDeadSprite": "/img/sprites/anthony/legacyAnthonyDead.png"
+  },
+  {
+    "id": 6,
+    "name": "Caitlin",
+    "aliveSprite": "/img/sprites/caitlin/caitAlive.png",
+    "deadSprite": "/img/sprites/caitlin/caitDead.png",
+    "legacyAliveSprite": "/img/sprites/caitlin/legacyCaitAlive.png",
+    "legacyDeadSprite": "/img/sprites/caitlin/legacyCaitDead.png"
+  },
+  {
+    "id": 7,
+    "name": "Amber",
+    "aliveSprite": "/img/sprites/amber/amberAlive.png",
+    "deadSprite": "/img/sprites/amber/amberDead.png",
+    "legacyAliveSprite": "/img/sprites/amber/legacyAmberAlive.png",
+    "legacyDeadSprite": "/img/sprites/amber/legacyAmberDead.png"
+  }
+]
