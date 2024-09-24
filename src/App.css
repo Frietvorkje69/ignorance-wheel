@@ -192,4 +192,22 @@ button {
   background-color: #C70039; /* Color for 'self' */
 }
 
+.inactive {
+  opacity: 0.5;
+  pointer-events: none; /* Disable click events */
+}
+
+.legacy-button {
+  margin-top: 20px;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  background-color: #4CAF50; /* Green */
+  color: white;
+  border: none;
+  border-radius: 5px;
+}
+
+
+
 

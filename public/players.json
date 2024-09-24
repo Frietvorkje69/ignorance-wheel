@@ -36,8 +36,8 @@
     "name": "Anthony",
     "aliveSprite": "/img/sprites/anthony/antAlive.png",
     "deadSprite": "/img/sprites/anthony/antDead.png",
-    "legacyAliveSprite": "/img/sprites/anthony/legacyAnthonyAlive.png",
-    "legacyDeadSprite": "/img/sprites/anthony/legacyAnthonyDead.png"
+    "legacyAliveSprite": "/img/sprites/anthony/legacyAntAlive.png",
+    "legacyDeadSprite": "/img/sprites/anthony/legacyAntDead.png"
   },
   {
     "id": 6,

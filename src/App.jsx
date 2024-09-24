@@ -14,7 +14,10 @@ function App() {
     const [showResultModal, setShowResultModal] = useState(false);
     const [resultSprite, setResultSprite] = useState(null);
     const [imageLoaded, setImageLoaded] = useState(false);
-    const [spinCompleted, setSpinCompleted] = useState(false);  // New state
+    const [spinCompleted, setSpinCompleted] = useState(false);
+    const [lastSpinners, setLastSpinners] = useState([]);
+    const [lastTargets, setLastTargets] = useState([]);
+    const [legacyMode, setLegacyMode] = useState(false);  // New state for legacy mode
 
     useEffect(() => {
         const fetchPlayers = async () => {
@@ -30,8 +33,8 @@ function App() {
             document.body.style.overflow = 'hidden';
         } else {
             document.body.style.overflow = 'hidden';
-            setResultSprite(null);  // Clear previous sprite when modal closes
-            setImageLoaded(false);  // Reset image loaded state
+            setResultSprite(null);
+            setImageLoaded(false);
         }
     }, [showResultModal]);
 
@@ -63,8 +66,8 @@ function App() {
             textDistance={65}
             onStopSpinning={() => {
                 setSpinStarted(false);
-                setSpinCompleted(true);  // Set spinCompleted to true when spinning stops
-                preloadImage(); // Preload the image before showing the modal
+                setSpinCompleted(true);
+                preloadImage();
             }}
             innerRadius={27}
             outerBorderWidth={10}
@@ -82,12 +85,16 @@ function App() {
         setPrizeNumber(randomPrizeNumber);
         setSpinStarted(true);
         setIsSpinning(true);
-        setSpinCompleted(false); // Reset spinCompleted state before spinning
+        setSpinCompleted(false);
 
         setTimeout(() => {
             const result = segments[randomPrizeNumber];
             setRouletteResult(result.option);
             setIsSpinning(false);
+            setLastSpinners(prev => {
+                const newSpinners = [spinner, ...prev];
+                return newSpinners.slice(0, 2);
+            });
         }, 11500);
     };
 
@@ -96,16 +103,20 @@ function App() {
         const img = new Image();
 
         if (result.type === 'self') {
-            img.src = spinner.deadSprite;
-            setResultSprite(spinner.deadSprite);
+            img.src = legacyMode ? spinner.legacyDeadSprite : spinner.deadSprite;
+            setResultSprite(legacyMode ? spinner.legacyDeadSprite : spinner.deadSprite);
         } else if (result.type === 'kill') {
-            img.src = target.deadSprite;
-            setResultSprite(target.deadSprite);
+            img.src = legacyMode ? target.legacyDeadSprite : target.deadSprite;
+            setResultSprite(legacyMode ? target.legacyDeadSprite : target.deadSprite);
         }
 
         img.onload = () => {
-            setImageLoaded(true); // Image is fully loaded
-            setShowResultModal(true); // Now show the modal
+            setImageLoaded(true);
+            setShowResultModal(true);
+            setLastTargets(prev => {
+                const newTargets = [target, ...prev];
+                return newTargets.slice(0, 2);
+            });
         };
     };
 
@@ -113,7 +124,15 @@ function App() {
         setShowResultModal(false);
         setRouletteResult(null);
         setStep(1);
-        setSpinCompleted(false);  // Reset spinCompleted state when modal is closed
+        setSpinCompleted(false);
+    };
+
+    const isInactiveSpinner = (player) => {
+        return lastSpinners.includes(player) && step === 1;
+    };
+
+    const isInactiveTarget = (player) => {
+        return lastTargets.includes(player) && step === 2;
     };
 
     if (players.length === 0) {
@@ -127,15 +146,25 @@ function App() {
                 <h2>Who is feeling lucky tonight?</h2>
                 <div className="player-grid">
                     {players.map((player) => (
-                        <div key={player.id} className="player-block" onClick={() => {
-                            setSpinner(player);
-                            setStep(2);
-                        }}>
-                            <img src={player.aliveSprite} alt={`${player.name} avatar`} className="player-avatar" />
+                        <div key={player.id} className={`player-block ${isInactiveSpinner(player) ? 'inactive' : ''}`}
+                             onClick={() => {
+                                 if (!isInactiveSpinner(player)) {
+                                     setSpinner(player);
+                                     setStep(2);
+                                 }
+                             }}>
+                            <img
+                                src={legacyMode ? player.legacyAliveSprite : player.aliveSprite}
+                                alt={`${player.name} avatar`}
+                                className="player-avatar"
+                            />
                             <p>{player.name}</p>
                         </div>
                     ))}
                 </div>
+                <button onClick={() => setLegacyMode(prev => !prev)} className="legacy-button">
+                    {legacyMode ? 'Switch to Modern' : 'Switch to Legacy'}
+                </button>
             </div>
         );
     }
@@ -149,8 +178,18 @@ function App() {
                     {players
                         .filter((player) => player.id !== spinner.id)
                         .map((player) => (
-                            <div key={player.id} className="player-block" onClick={() => { setTarget(player); setStep(3); }}>
-                                <img src={player.aliveSprite} alt={`${player.name} avatar`} className="player-avatar" />
+                            <div key={player.id} className={`player-block ${isInactiveTarget(player) ? 'inactive' : ''}`}
+                                 onClick={() => {
+                                     if (!isInactiveTarget(player)) {
+                                         setTarget(player);
+                                         setStep(3);
+                                     }
+                                 }}>
+                                <img
+                                    src={legacyMode ? player.legacyAliveSprite : player.aliveSprite}
+                                    alt={`${player.name} avatar`}
+                                    className="player-avatar"
+                                />
                                 <p>{player.name}</p>
                             </div>
                         ))}
@@ -164,14 +203,22 @@ function App() {
             <div className="screen">
                 <div className="versus-container">
                     <div className="player-sprite-container">
-                        <img src={spinner.aliveSprite} alt={`${spinner.name} sprite`} className="versus-sprite" />
+                        <img
+                            src={legacyMode ? spinner.legacyAliveSprite : spinner.aliveSprite}
+                            alt={`${spinner.name} sprite`}
+                            className="versus-sprite"
+                        />
                         <p>{spinner.name}</p>
                     </div>
                     <div className="vs-text">
                         <p>vs.</p>
                     </div>
                     <div className="player-sprite-container">
-                        <img src={target.aliveSprite} alt={`${target.name} sprite`} className="versus-sprite" />
+                        <img
+                            src={legacyMode ? target.legacyAliveSprite : target.aliveSprite}
+                            alt={`${target.name} sprite`}
+                            className="versus-sprite"
+                        />
                         <p>{target.name}</p>
                     </div>
                 </div>
@@ -188,7 +235,6 @@ function App() {
                 </div>
 
                 <div className="button-container">
-                    {/* Update the condition to hide buttons based on spinCompleted and showResultModal */}
                     {!spinStarted && !showResultModal && !spinCompleted && (
                         <>
                             <button onClick={spinWheel} className="spin-button">
