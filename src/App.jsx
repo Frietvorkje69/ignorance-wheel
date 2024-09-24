@@ -14,6 +14,7 @@ function App() {
     const [showResultModal, setShowResultModal] = useState(false);
     const [resultSprite, setResultSprite] = useState(null);
     const [imageLoaded, setImageLoaded] = useState(false);
+    const [spinCompleted, setSpinCompleted] = useState(false);  // New state
 
     useEffect(() => {
         const fetchPlayers = async () => {
@@ -62,6 +63,7 @@ function App() {
             textDistance={65}
             onStopSpinning={() => {
                 setSpinStarted(false);
+                setSpinCompleted(true);  // Set spinCompleted to true when spinning stops
                 preloadImage(); // Preload the image before showing the modal
             }}
             innerRadius={27}
@@ -80,6 +82,7 @@ function App() {
         setPrizeNumber(randomPrizeNumber);
         setSpinStarted(true);
         setIsSpinning(true);
+        setSpinCompleted(false); // Reset spinCompleted state before spinning
 
         setTimeout(() => {
             const result = segments[randomPrizeNumber];
@@ -110,6 +113,7 @@ function App() {
         setShowResultModal(false);
         setRouletteResult(null);
         setStep(1);
+        setSpinCompleted(false);  // Reset spinCompleted state when modal is closed
     };
 
     if (players.length === 0) {
@@ -184,18 +188,15 @@ function App() {
                 </div>
 
                 <div className="button-container">
-                    {!showResultModal && (
+                    {/* Update the condition to hide buttons based on spinCompleted and showResultModal */}
+                    {!spinStarted && !showResultModal && !spinCompleted && (
                         <>
-                            {!spinStarted && (
-                                <button onClick={spinWheel} className="spin-button">
-                                    Spin the Wheel
-                                </button>
-                            )}
-                            {!spinStarted && (
-                                <button onClick={() => setStep(4)} className="play-again-button">
-                                    Go Back
-                                </button>
-                            )}
+                            <button onClick={spinWheel} className="spin-button">
+                                Spin the Wheel
+                            </button>
+                            <button onClick={() => setStep(4)} className="play-again-button">
+                                Go Back
+                            </button>
                         </>
                     )}
                 </div>
