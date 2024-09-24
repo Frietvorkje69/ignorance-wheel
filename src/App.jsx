@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { Wheel } from 'react-custom-roulette';
 import './App.css';
 
 function App() {
@@ -9,6 +10,8 @@ function App() {
     const [isSpinning, setIsSpinning] = useState(false);
     const [rouletteResult, setRouletteResult] = useState(null);
     const [spinStarted, setSpinStarted] = useState(false);
+    const [prizeNumber, setPrizeNumber] = useState(0);
+
 
     useEffect(() => {
         // Fetch players.json from the public folder
@@ -21,35 +24,53 @@ function App() {
     }, []);
 
     const segments = [
-        { color: 'black', text: '1 sip (Target)' },
-        { color: 'red', text: '1 sip (Spinner)' },
-        { color: 'black', text: '2 sips (Target)' },
-        { color: 'red', text: '2 sips (Spinner)' },
-        { color: 'black', text: '3 sips (Target)' },
-        { color: 'red', text: '3 sips (Spinner)' },
-        { color: 'black', text: '4 sips (Target)' },
-        { color: 'red', text: '4 sips (Spinner)' },
-        { color: 'black', text: '5 sips (Target)' },
-        { color: 'red', text: '5 sips (Spinner)' },
-        { color: 'black', text: '6 sips (Target)' },
-        { color: 'red', text: '6 sips (Spinner)' },
-        { color: 'green', text: 'Shot (Spinner)' },
-        { color: 'green', text: 'Shot (Target)' }
+        { option: '1 sip (kill)', style: { backgroundColor: '#131313B2',} },
+        { option: '1 sip (self)', style: { backgroundColor: '#ec4427',} },
+        { option: '2 sips (kill)', style: { backgroundColor: '#131313B2'} },
+        { option: '2 sips (self)', style: { backgroundColor: '#ec4427'} },
+        { option: '3 sips (kill)', style: { backgroundColor: '#131313B2'} },
+        { option: '3 sips (self)', style: { backgroundColor: '#ec4427'} },
+        { option: '4 sips (kill)', style: { backgroundColor: '#131313B2'} },
+        { option: '4 sips (self)', style: { backgroundColor: '#ec4427'} },
+        { option: '5 sips (kill)', style: { backgroundColor: '#131313B2'} },
+        { option: '5 sips (self)', style: { backgroundColor: '#ec4427'} },
+        { option: '6 sips (kill)', style: { backgroundColor: '#131313B2'} },
+        { option: '6 sips (self)', style: { backgroundColor: '#ec4427'} },
+        { option: 'Shot (self)', style: { backgroundColor: '#32a852'} },
+        { option: 'Shot (kill)', style: { backgroundColor: '#32a852'} }
     ];
 
+    const rouletteWheel = (
+        <Wheel
+            mustStartSpinning={spinStarted}
+            prizeNumber={prizeNumber}
+            data={segments}
+           // backgroundColors={['#3e3e3e', '#df3428']}
+            textColors={['#ffffff']}
+            textDistance={65}
+            onStopSpinning={() => setSpinStarted(false)}
+            innerRadius={27} e
+            outerBorderWidth={0}
+            radiusLineWidth={0}
+
+        />
+    );
+
     const spinWheel = () => {
+        if (isSpinning) return; // Prevent multiple spin initiations
+
+        const randomPrizeNumber = Math.floor(Math.random() * segments.length);
+        setPrizeNumber(randomPrizeNumber); // Set the prizeNumber first
+
         setSpinStarted(true);
         setIsSpinning(true);
-        const randomRotation = Math.floor(Math.random() * 360) + 1440; // Ensure multiple spins (1440 = 4 full spins)
 
         // Timeout to simulate the end of the spin
         setTimeout(() => {
-            const segmentIndex = Math.floor(((randomRotation % 360) / 360) * segments.length); // Determine the segment
-            const result = segments[segmentIndex].text;
-
-            setRouletteResult(result);
+            setRouletteResult(segments[randomPrizeNumber].option);
             setIsSpinning(false);
-        }, 5000); // Spin for 5 seconds
+            setSpinStarted(false);
+        }, 11500);
     };
 
     if (players.length === 0) {
@@ -96,7 +117,7 @@ function App() {
             <div className="screen">
                 <h1>{spinner.name} vs {target.name}</h1>
                 <div className="roulette-container">
-                    <div className={`roulette-wheel ${isSpinning ? 'spin' : ''}`}></div>
+                    {rouletteWheel}
                 </div>
                 {rouletteResult ? (
                     <p className="roulette-result">{rouletteResult}</p>
@@ -105,9 +126,14 @@ function App() {
                         {spinStarted ? 'Spinning...' : 'Spin the Wheel'}
                     </button>
                 )}
-                <button onClick={() => setStep(1)} disabled={isSpinning}>Play Again</button>
+                <button onClick={() => setStep(4)}   disabled={isSpinning}>Play Again</button>
             </div>
         );
+    }
+
+    if (step === 4) {
+        setRouletteResult(null);
+        setStep(1);
     }
 
     return null;
