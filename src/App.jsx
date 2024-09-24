@@ -240,9 +240,6 @@ function App() {
                             <button onClick={spinWheel} className="spin-button">
                                 Spin the Wheel
                             </button>
-                            <button onClick={() => setStep(4)} className="play-again-button">
-                                Go Back
-                            </button>
                         </>
                     )}
                 </div>
