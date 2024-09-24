@@ -108,7 +108,8 @@ function App() {
 
     const closeResultModal = () => {
         setShowResultModal(false);
-        setStep(4);
+        setRouletteResult(null);
+        setStep(1);
     };
 
     if (players.length === 0) {
@@ -213,11 +214,6 @@ function App() {
                 )}
             </div>
         );
-    }
-
-    if (step === 4) {
-        setRouletteResult(null);
-        setStep(0);
     }
 
     return null;
