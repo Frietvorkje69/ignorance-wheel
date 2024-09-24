@@ -15,10 +15,11 @@ function App() {
     const [resultSprite, setResultSprite] = useState(null);
     const [imageLoaded, setImageLoaded] = useState(false);
     const [spinCompleted, setSpinCompleted] = useState(false);
-    const [lastSpinners, setLastSpinners] = useState([]);
-    const [lastTargets, setLastTargets] = useState([]);
     const [legacyMode, setLegacyMode] = useState(false);
-    const [doubleDown, setDoubleDown] = useState(false); // State for Double Down
+    const [doubleDown, setDoubleDown] = useState(false);
+    const [rareEventTriggered, setRareEventTriggered] = useState(false);
+    const [rareEventClickable, setRareEventClickable] = useState(false);
+    const [errorImage, setErrorImage] = useState(null); // Add state for the preloaded error image
 
     useEffect(() => {
         const fetchPlayers = async () => {
@@ -82,23 +83,40 @@ function App() {
         />
     );
 
+    const resetGame = () => {
+        setStep(1);
+        setRouletteResult(null);
+        setShowResultModal(false);
+        setSpinCompleted(false);
+        setDoubleDown(false);
+        setRareEventTriggered(false);
+        setRareEventClickable(false);
+
+    };
+
     const spinWheel = () => {
         if (isSpinning) return;
 
-        const randomPrizeNumber = Math.floor(Math.random() * getSegments().length); // Update for segments function
+        const randomPrizeNumber = Math.floor(Math.random() * getSegments().length);
         setPrizeNumber(randomPrizeNumber);
+
         setSpinStarted(true);
         setIsSpinning(true);
         setSpinCompleted(false);
 
+        if (Math.random() < 0.01) { // 1/100 chance
+            preloadErrorImage(); // Preload the error image during the delay
+            setTimeout(() => {
+                setRareEventTriggered(true);
+                setTimeout(() => setRareEventClickable(true), 15000); // Enable clicking after 15 seconds
+            }, 2000); // Show blue screen after 2 sec
+        }
+
+
         setTimeout(() => {
-            const result = getSegments()[randomPrizeNumber]; // Update for segments function
+            const result = getSegments()[randomPrizeNumber];
             setRouletteResult(result.option);
             setIsSpinning(false);
-            setLastSpinners(prev => {
-                const newSpinners = [spinner, ...prev];
-                return newSpinners.slice(0, 2);
-            });
         }, 11500);
     };
 
@@ -117,28 +135,20 @@ function App() {
         img.onload = () => {
             setImageLoaded(true);
             setShowResultModal(true);
-            setLastTargets(prev => {
-                const newTargets = [target, ...prev];
-                return newTargets.slice(0, 2);
-            });
+        };
+    };
+
+    const preloadErrorImage = () => {
+        const img = new Image();
+        img.src = '/img/error.png';
+        img.onload = () => {
+            setErrorImage(img.src); // Store the preloaded image URL in the state
         };
     };
 
     const closeResultModal = () => {
-        setRouletteResult(null);
-        setShowResultModal(false);
-        setSpinCompleted(false);
-        setDoubleDown(false);
-        setStep(1);
+        setStep(4);
 
-    };
-
-    const isInactiveSpinner = (player) => {
-        return lastSpinners.includes(player) && step === 1;
-    };
-
-    const isInactiveTarget = (player) => {
-        return lastTargets.includes(player) && step === 2;
     };
 
     const handleDoubleDown = () => {
@@ -156,12 +166,10 @@ function App() {
                 <h2>Who is feeling lucky tonight?</h2>
                 <div className="player-grid">
                     {players.map((player) => (
-                        <div key={player.id} className={`player-block ${isInactiveSpinner(player) ? 'inactive' : ''}`}
+                        <div key={player.id} className="player-block"
                              onClick={() => {
-                                 if (!isInactiveSpinner(player)) {
-                                     setSpinner(player);
-                                     setStep(2);
-                                 }
+                                 setSpinner(player);
+                                 setStep(2);
                              }}>
                             <img
                                 src={legacyMode ? player.legacyAliveSprite : player.aliveSprite}
@@ -188,12 +196,10 @@ function App() {
                     {players
                         .filter((player) => player.id !== spinner.id)
                         .map((player) => (
-                            <div key={player.id} className={`player-block ${isInactiveTarget(player) ? 'inactive' : ''}`}
+                            <div key={player.id} className="player-block"
                                  onClick={() => {
-                                     if (!isInactiveTarget(player)) {
-                                         setTarget(player);
-                                         setStep(3);
-                                     }
+                                     setTarget(player);
+                                     setStep(3);
                                  }}>
                                 <img
                                     src={legacyMode ? player.legacyAliveSprite : player.aliveSprite}
@@ -278,8 +284,24 @@ function App() {
                         </div>
                     </div>
                 )}
+
+                {rareEventTriggered && (
+                    <div
+                        className="rare-event-overlay"
+                        onClick={() => rareEventClickable && setStep(4)} // Only allow click if clickable
+                    >
+                        <img src={errorImage} alt="Rare Event" className="rare-event-image" /> {/* Use preloaded errorImage */}
+                    </div>
+                )}
             </div>
         );
+    }
+
+    if (step === 4) {
+
+        resetGame()
+
+        return null;
     }
 
     return null;
