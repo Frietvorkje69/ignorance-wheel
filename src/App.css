@@ -1,3 +1,4 @@
+/* General body styles */
 body {
   margin: 0;
   font-family: 'Arial', sans-serif;
@@ -19,7 +20,7 @@ h1, h2 {
 
 .player-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   gap: 20px;
   margin-top: 20px;
 }
@@ -40,34 +41,141 @@ h1, h2 {
 .player-avatar {
   width: 100px;
   height: 100px;
-  border-radius: 50%;
   object-fit: cover;
   margin-bottom: 10px;
 }
 
+/* Versus Screen */
+.versus-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 10px;
+  flex-direction: row;
+  position: relative;
+}
+
+.player-sprite-container {
+  text-align: center;
+  margin: 0 20px;
+}
+
+.versus-sprite {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+}
+
+.vs-text {
+  font-size: 36px;
+  font-weight: bold;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 20px;
+}
+
+/* Roulette Wheel */
 .roulette-container {
   display: flex;
   justify-content: center;
   align-items: center;
-  margin: 50px 0;
+  margin: 20px 0;
 }
 
-.roulette-result {
-  font-size: 24px;
-  color: #fff;
-  margin: 20px;
+/* Button Container */
+.button-container {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
 }
 
 button {
-  border: none;
-  border-radius: 5px;
-  transition: background-color 0.3s ease;
+  margin-right: 5px;
 }
 
-button:hover {
-  background-color: #0056b3;
+.spin-button:hover, .play-again-button:hover {
+  background-color: #00a1e6;
 }
 
-button:disabled {
-  background-color: #555;
+/* Result Overlay */
+.result-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  cursor: pointer;
 }
+
+.result-content {
+  display: flex;
+  align-items: center;
+  padding: 20px;
+  border-radius: 10px;
+}
+
+.result-dead-sprite {
+  width: 300px; /* Make the dead sprite larger */
+  height: auto;
+  margin-right: 20px; /* Space between image and text */
+}
+
+.result-text {
+  color: #fff; /* Set text color to white */
+  font-size: 45px;
+  margin: 0;
+  text-align: center; /* Center text in the modal */
+}
+
+/* Roulette Wheel */
+.roulette-container {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start; /* Align items to the start */
+  margin: 20px 0;
+  position: relative; /* Position relative for absolute positioning of legend */
+}
+
+.legend {
+  position: absolute; /* Change to absolute positioning */
+  bottom: 10px; /* Position it 10px from the bottom */
+  right: 0px; /* Position it 20px from the right */
+  font-size: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start; /* Align items to start (left) */
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.legend-item span {
+  outline: 2px solid white; /* Add a white border around the span */
+}
+
+.color-box {
+  width: 20px;
+  height: 20px;
+  margin-right: 10px;
+  border-radius: 4px;
+}
+
+.color-box.kill {
+  background-color: #131313B2; /* Color for 'kill' */
+}
+
+.color-box.self {
+  background-color: #C70039; /* Color for 'self' */
+}
+
+
