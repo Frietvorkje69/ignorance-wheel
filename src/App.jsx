@@ -17,7 +17,8 @@ function App() {
     const [spinCompleted, setSpinCompleted] = useState(false);
     const [lastSpinners, setLastSpinners] = useState([]);
     const [lastTargets, setLastTargets] = useState([]);
-    const [legacyMode, setLegacyMode] = useState(false);  // New state for legacy mode
+    const [legacyMode, setLegacyMode] = useState(false);
+    const [doubleDown, setDoubleDown] = useState(false); // State for Double Down
 
     useEffect(() => {
         const fetchPlayers = async () => {
@@ -38,30 +39,33 @@ function App() {
         }
     }, [showResultModal]);
 
-    const segments = [
-        { option: '1 sip', type: 'kill', style: { backgroundColor: '#131313B2' } },
-        { option: '1 sip', type: 'self', style: { backgroundColor: '#C70039' } },
-        { option: '2 sips', type: 'kill', style: { backgroundColor: '#131313B2' } },
-        { option: '2 sips', type: 'self', style: { backgroundColor: '#C70039' } },
-        { option: '3 sips', type: 'kill', style: { backgroundColor: '#131313B2' } },
-        { option: '3 sips', type: 'self', style: { backgroundColor: '#C70039' } },
-        { option: '4 sips', type: 'kill', style: { backgroundColor: '#131313B2' } },
-        { option: '2 Shots', type: 'kill', style: { backgroundColor: '#4F7942' } },
-        { option: '4 sips', type: 'self', style: { backgroundColor: '#C70039' } },
-        { option: '5 sips', type: 'kill', style: { backgroundColor: '#131313B2' } },
-        { option: '5 sips', type: 'self', style: { backgroundColor: '#C70039' } },
-        { option: '6 sips', type: 'kill', style: { backgroundColor: '#131313B2' } },
-        { option: '6 sips', type: 'self', style: { backgroundColor: '#C70039' } },
-        { option: 'Chug', type: 'kill', style: { backgroundColor: '#131313B2' } },
-        { option: 'Chug', type: 'self', style: { backgroundColor: '#C70039' } },
-        { option: '2 Shots', type: 'self', style: { backgroundColor: '#4F7942' } }
-    ];
+    const getSegments = () => {
+        return [
+            { option: doubleDown ? '2 sips' : '1 sip', type: 'kill', style: { backgroundColor: '#131313B2' } },
+            { option: doubleDown ? '3 sips' : '1 sip', type: 'self', style: { backgroundColor: '#C70039' } },
+            { option: doubleDown ? '4 sips' : '2 sips', type: 'kill', style: { backgroundColor: '#131313B2' } },
+            { option: doubleDown ? '6 sips' : '2 sips', type: 'self', style: { backgroundColor: '#C70039' } },
+            { option: doubleDown ? '6 sips' : '3 sips', type: 'kill', style: { backgroundColor: '#131313B2' } },
+            { option: doubleDown ? '9 sips' : '3 sips', type: 'self', style: { backgroundColor: '#C70039' } },
+            { option: doubleDown ? '8 sips' : '4 sips', type: 'kill', style: { backgroundColor: '#131313B2' } },
+            { option: doubleDown ? '2 Shots' : '1 Shot', type: 'kill', style: { backgroundColor: '#4F7942' } },
+            { option: doubleDown ? '12 sips' : '4 sips', type: 'self', style: { backgroundColor: '#C70039' } },
+            { option: doubleDown ? '10 sips' : '5 sips', type: 'kill', style: { backgroundColor: '#131313B2' } },
+            { option: doubleDown ? '15 sips' : '5 sips', type: 'self', style: { backgroundColor: '#C70039' } },
+            { option: doubleDown ? '12 sips' : '6 sips', type: 'kill', style: { backgroundColor: '#131313B2' } },
+            { option: doubleDown ? '18 sips' : '6 sips', type: 'self', style: { backgroundColor: '#C70039' } },
+            { option: doubleDown ? 'Chug 2' : 'Chug', type: 'kill', style: { backgroundColor: '#131313B2' } },
+            { option: doubleDown ? 'Chug 2' : 'Chug', type: 'self', style: { backgroundColor: '#C70039' } },
+            { option: doubleDown ? '3 Shots' : '1 Shot', type: 'self', style: { backgroundColor: '#4F7942' } }
+
+        ];
+    };
 
     const rouletteWheel = (
         <Wheel
             mustStartSpinning={spinStarted}
             prizeNumber={prizeNumber}
-            data={segments}
+            data={getSegments()} // Call the function to get the updated segments
             textColors={['#ffffff']}
             textDistance={65}
             onStopSpinning={() => {
@@ -81,14 +85,14 @@ function App() {
     const spinWheel = () => {
         if (isSpinning) return;
 
-        const randomPrizeNumber = Math.floor(Math.random() * segments.length);
+        const randomPrizeNumber = Math.floor(Math.random() * getSegments().length); // Update for segments function
         setPrizeNumber(randomPrizeNumber);
         setSpinStarted(true);
         setIsSpinning(true);
         setSpinCompleted(false);
 
         setTimeout(() => {
-            const result = segments[randomPrizeNumber];
+            const result = getSegments()[randomPrizeNumber]; // Update for segments function
             setRouletteResult(result.option);
             setIsSpinning(false);
             setLastSpinners(prev => {
@@ -99,7 +103,7 @@ function App() {
     };
 
     const preloadImage = () => {
-        const result = segments[prizeNumber];
+        const result = getSegments()[prizeNumber]; // Update for segments function
         const img = new Image();
 
         if (result.type === 'self') {
@@ -121,10 +125,12 @@ function App() {
     };
 
     const closeResultModal = () => {
-        setShowResultModal(false);
         setRouletteResult(null);
-        setStep(1);
+        setShowResultModal(false);
         setSpinCompleted(false);
+        setDoubleDown(false);
+        setStep(1);
+
     };
 
     const isInactiveSpinner = (player) => {
@@ -133,6 +139,10 @@ function App() {
 
     const isInactiveTarget = (player) => {
         return lastTargets.includes(player) && step === 2;
+    };
+
+    const handleDoubleDown = () => {
+        setDoubleDown(true); // Toggle the double down effect
     };
 
     if (players.length === 0) {
@@ -240,6 +250,18 @@ function App() {
                             <button onClick={spinWheel} className="spin-button">
                                 Spin the Wheel
                             </button>
+                            <div className="double-down-container">
+                                <button
+                                    onClick={handleDoubleDown}
+                                    className="double-down-button"
+                                    disabled={doubleDown} // Disable if already activated
+                                >
+                                    {doubleDown ? 'Doubled Down!' : 'Double Down'}
+                                </button>
+                                {!doubleDown && (
+                                    <div className="tooltip">Double the attack, triple the consequences.</div>
+                                )}
+                            </div>
                         </>
                     )}
                 </div>

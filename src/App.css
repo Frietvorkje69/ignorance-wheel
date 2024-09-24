@@ -103,6 +103,7 @@ h1, h2 {
   position: absolute;
   bottom: 20px;
   right: 20px;
+  z-index: 5;
 }
 
 button {
@@ -208,6 +209,47 @@ button {
   border-radius: 5px;
 }
 
+.double-down-container {
+  position: relative;
+  display: inline-block;
+  margin-left: 10px;
+}
+
+.tooltip {
+  visibility: hidden; /* Start hidden */
+  background-color: #555;
+  color: #fff;
+  text-align: center;
+  border-radius: 5px;
+  padding: 5px;
+  position: absolute;
+  z-index: 1;
+  bottom: 100%; /* Position the tooltip above the button */
+  left: 37%;
+  margin-left: -60px; /* Center the tooltip */
+  opacity: 0.8;
+  margin-bottom: 6px;
+}
+
+.double-down-button:hover + .tooltip {
+  visibility: visible; /* Show on hover */
+}
+
+.double-down-button:hover {
+  background-color: #e63d00;
+}
+
+.double-down-button {
+  cursor: pointer;
+  padding: 10px 15px;
+  color: white;
+  border-radius: 5px;
+}
+
+.double-down-button:disabled {
+  background-color: #ff3d3d;
+  cursor: not-allowed;
+}
 
 
 
