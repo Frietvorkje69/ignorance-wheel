@@ -25,19 +25,19 @@ function App() {
 
     const segments = [
         { option: '1 sip (kill)', style: { backgroundColor: '#131313B2',} },
-        { option: '1 sip (self)', style: { backgroundColor: '#ec4427',} },
+        { option: '1 sip (self)', style: { backgroundColor: '#C70039',} },
         { option: '2 sips (kill)', style: { backgroundColor: '#131313B2'} },
-        { option: '2 sips (self)', style: { backgroundColor: '#ec4427'} },
+        { option: '2 sips (self)', style: { backgroundColor: '#C70039'} },
         { option: '3 sips (kill)', style: { backgroundColor: '#131313B2'} },
-        { option: '3 sips (self)', style: { backgroundColor: '#ec4427'} },
+        { option: '3 sips (self)', style: { backgroundColor: '#C70039'} },
+        { option: '2 Shots (kill)', style: { backgroundColor: '#4F7942'} },
         { option: '4 sips (kill)', style: { backgroundColor: '#131313B2'} },
-        { option: '4 sips (self)', style: { backgroundColor: '#ec4427'} },
+        { option: '4 sips (self)', style: { backgroundColor: '#C70039'} },
         { option: '5 sips (kill)', style: { backgroundColor: '#131313B2'} },
-        { option: '5 sips (self)', style: { backgroundColor: '#ec4427'} },
+        { option: '5 sips (self)', style: { backgroundColor: '#C70039'} },
         { option: '6 sips (kill)', style: { backgroundColor: '#131313B2'} },
-        { option: '6 sips (self)', style: { backgroundColor: '#ec4427'} },
-        { option: 'Shot (self)', style: { backgroundColor: '#32a852'} },
-        { option: 'Shot (kill)', style: { backgroundColor: '#32a852'} }
+        { option: '6 sips (self)', style: { backgroundColor: '#C70039'} },
+        { option: '2 Shots (self)', style: { backgroundColor: '#4F7942'} }
     ];
 
     const rouletteWheel = (
@@ -45,13 +45,15 @@ function App() {
             mustStartSpinning={spinStarted}
             prizeNumber={prizeNumber}
             data={segments}
-           // backgroundColors={['#3e3e3e', '#df3428']}
             textColors={['#ffffff']}
             textDistance={65}
             onStopSpinning={() => setSpinStarted(false)}
             innerRadius={27} e
-            outerBorderWidth={0}
-            radiusLineWidth={0}
+            outerBorderWidth={10}
+            innerBorderColor={['#ffffff']}
+            radiusLineColor={['#be8d15']}
+            radiusLineWidth={4}
+            // pointerProps={ src: roulettePointer }
 
         />
     );
