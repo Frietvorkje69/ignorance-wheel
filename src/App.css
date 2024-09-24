@@ -1,7 +1,21 @@
+/* Modal fade-in animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.fade-in {
+  animation: fadeIn 0.5s ease-in-out; /* Apply the fade-in animation */
+}
+
 /* General body styles */
 body {
   margin: 0;
-  font-family: 'Arial', sans-serif;
+  font-family: 'Montserrat', sans-serif;
   background-color: #1c1c1c;
   color: #fff;
   display: flex;

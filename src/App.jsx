@@ -13,6 +13,7 @@ function App() {
     const [prizeNumber, setPrizeNumber] = useState(0);
     const [showResultModal, setShowResultModal] = useState(false);
     const [resultSprite, setResultSprite] = useState(null);
+    const [imageLoaded, setImageLoaded] = useState(false);
 
     useEffect(() => {
         const fetchPlayers = async () => {
@@ -23,17 +24,14 @@ function App() {
         fetchPlayers();
     }, []);
 
-    // Effect to manage body overflow based on modal visibility
     useEffect(() => {
         if (showResultModal) {
             document.body.style.overflow = 'hidden';
         } else {
             document.body.style.overflow = 'hidden';
+            setResultSprite(null);  // Clear previous sprite when modal closes
+            setImageLoaded(false);  // Reset image loaded state
         }
-
-        return () => {
-            document.body.style.overflow = 'auto';
-        };
     }, [showResultModal]);
 
     const segments = [
@@ -43,13 +41,15 @@ function App() {
         { option: '2 sips', type: 'self', style: { backgroundColor: '#C70039' } },
         { option: '3 sips', type: 'kill', style: { backgroundColor: '#131313B2' } },
         { option: '3 sips', type: 'self', style: { backgroundColor: '#C70039' } },
-        { option: '2 Shots', type: 'kill', style: { backgroundColor: '#4F7942' } },
         { option: '4 sips', type: 'kill', style: { backgroundColor: '#131313B2' } },
+        { option: '2 Shots', type: 'kill', style: { backgroundColor: '#4F7942' } },
         { option: '4 sips', type: 'self', style: { backgroundColor: '#C70039' } },
         { option: '5 sips', type: 'kill', style: { backgroundColor: '#131313B2' } },
         { option: '5 sips', type: 'self', style: { backgroundColor: '#C70039' } },
         { option: '6 sips', type: 'kill', style: { backgroundColor: '#131313B2' } },
         { option: '6 sips', type: 'self', style: { backgroundColor: '#C70039' } },
+        { option: 'Chug', type: 'kill', style: { backgroundColor: '#131313B2' } },
+        { option: 'Chug', type: 'self', style: { backgroundColor: '#C70039' } },
         { option: '2 Shots', type: 'self', style: { backgroundColor: '#4F7942' } }
     ];
 
@@ -62,7 +62,7 @@ function App() {
             textDistance={65}
             onStopSpinning={() => {
                 setSpinStarted(false);
-                setShowResultModal(true);
+                preloadImage(); // Preload the image before showing the modal
             }}
             innerRadius={27}
             outerBorderWidth={10}
@@ -84,15 +84,26 @@ function App() {
         setTimeout(() => {
             const result = segments[randomPrizeNumber];
             setRouletteResult(result.option);
-
-            if (result.type === 'self') {
-                setResultSprite(spinner.deadSprite);
-            } else if (result.type === 'kill') {
-                setResultSprite(target.deadSprite);
-            }
-
             setIsSpinning(false);
         }, 11500);
+    };
+
+    const preloadImage = () => {
+        const result = segments[prizeNumber];
+        const img = new Image();
+
+        if (result.type === 'self') {
+            img.src = spinner.deadSprite;
+            setResultSprite(spinner.deadSprite);
+        } else if (result.type === 'kill') {
+            img.src = target.deadSprite;
+            setResultSprite(target.deadSprite);
+        }
+
+        img.onload = () => {
+            setImageLoaded(true); // Image is fully loaded
+            setShowResultModal(true); // Now show the modal
+        };
     };
 
     const closeResultModal = () => {
@@ -115,7 +126,7 @@ function App() {
                             setSpinner(player);
                             setStep(2);
                         }}>
-                            <img src={player.aliveSprite} alt={`${player.name} avatar`} className="player-avatar"/>
+                            <img src={player.aliveSprite} alt={`${player.name} avatar`} className="player-avatar" />
                             <p>{player.name}</p>
                         </div>
                     ))}
@@ -172,7 +183,6 @@ function App() {
                 </div>
 
                 <div className="button-container">
-                    {/* Only show buttons if the result modal is not visible */}
                     {!showResultModal && (
                         <>
                             {!spinStarted && (
@@ -180,7 +190,7 @@ function App() {
                                     Spin the Wheel
                                 </button>
                             )}
-                            {!isSpinning && !spinStarted && (
+                            {!spinStarted && (
                                 <button onClick={() => setStep(4)} className="play-again-button">
                                     Go Back
                                 </button>
@@ -189,8 +199,8 @@ function App() {
                     )}
                 </div>
 
-                {showResultModal && (
-                    <div className="result-overlay" onClick={closeResultModal}>
+                {showResultModal && imageLoaded && (
+                    <div className="result-overlay fade-in" onClick={closeResultModal}>
                         <div className="result-content">
                             <img
                                 src={resultSprite}
@@ -207,7 +217,7 @@ function App() {
 
     if (step === 4) {
         setRouletteResult(null);
-        setStep(1);
+        setStep(0);
     }
 
     return null;
