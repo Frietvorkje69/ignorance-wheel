@@ -45,21 +45,21 @@ function App() {
 
     const getSegments = () => {
         return [
-            { option: doubleDown ? '2 sips' : '1 sip', type: 'kill', style: { backgroundColor: '#131313B2' } },
-            { option: doubleDown ? '3 sips' : '1 sip', type: 'self', style: { backgroundColor: '#C70039' } },
-            { option: doubleDown ? '4 sips' : '2 sips', type: 'kill', style: { backgroundColor: '#131313B2' } },
-            { option: doubleDown ? '6 sips' : '2 sips', type: 'self', style: { backgroundColor: '#C70039' } },
-            { option: doubleDown ? '6 sips' : '3 sips', type: 'kill', style: { backgroundColor: '#131313B2' } },
-            { option: doubleDown ? '9 sips' : '3 sips', type: 'self', style: { backgroundColor: '#C70039' } },
-            { option: doubleDown ? '8 sips' : '4 sips', type: 'kill', style: { backgroundColor: '#131313B2' } },
+            { option: doubleDown ? '2 Sips' : '1 Sip', type: 'kill', style: { backgroundColor: '#131313B2' } },
+            { option: doubleDown ? '3 Sips' : '1 Sip', type: 'self', style: { backgroundColor: '#C70039' } },
+            { option: doubleDown ? '4 Sips' : '2 Sips', type: 'kill', style: { backgroundColor: '#131313B2' } },
+            { option: doubleDown ? '6 Sips' : '2 Sips', type: 'self', style: { backgroundColor: '#C70039' } },
+            { option: doubleDown ? '6 Sips' : '3 Sips', type: 'kill', style: { backgroundColor: '#131313B2' } },
+            { option: doubleDown ? '9 Sips' : '3 Sips', type: 'self', style: { backgroundColor: '#C70039' } },
+            { option: doubleDown ? '8 Sips' : '4 Sips', type: 'kill', style: { backgroundColor: '#131313B2' } },
             { option: doubleDown ? '2 Shots' : '1 Shot', type: 'kill', style: { backgroundColor: '#4F7942' } },
-            { option: doubleDown ? '12 sips' : '4 sips', type: 'self', style: { backgroundColor: '#C70039' } },
-            { option: doubleDown ? '10 sips' : '5 sips', type: 'kill', style: { backgroundColor: '#131313B2' } },
-            { option: doubleDown ? '15 sips' : '5 sips', type: 'self', style: { backgroundColor: '#C70039' } },
-            { option: doubleDown ? '12 sips' : '6 sips', type: 'kill', style: { backgroundColor: '#131313B2' } },
-            { option: doubleDown ? '18 sips' : '6 sips', type: 'self', style: { backgroundColor: '#C70039' } },
-            { option: doubleDown ? 'Chug 2' : 'Chug', type: 'kill', style: { backgroundColor: '#131313B2' } },
-            { option: doubleDown ? 'Chug 2' : 'Chug', type: 'self', style: { backgroundColor: '#C70039' } },
+            { option: doubleDown ? '12 Sips' : '4 Sips', type: 'self', style: { backgroundColor: '#C70039' } },
+            { option: doubleDown ? '10 Sips' : '5 Sips', type: 'kill', style: { backgroundColor: '#131313B2' } },
+            { option: doubleDown ? '15 Sips' : '5 Sips', type: 'self', style: { backgroundColor: '#C70039' } },
+            { option: doubleDown ? '12 Sips' : '6 Sips', type: 'kill', style: { backgroundColor: '#131313B2' } },
+            { option: doubleDown ? '18 Sips' : '6 Sips', type: 'self', style: { backgroundColor: '#C70039' } },
+            { option: doubleDown ? '2 Chugs' : '1 Chug', type: 'kill', style: { backgroundColor: '#131313B2' } },
+            { option: doubleDown ? '3 Chugs' : '1 Chug', type: 'self', style: { backgroundColor: '#C70039' } },
             { option: doubleDown ? '3 Shots' : '1 Shot', type: 'self', style: { backgroundColor: '#4F7942' } }
         ];
     };

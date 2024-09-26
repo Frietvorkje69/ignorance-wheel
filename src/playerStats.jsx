@@ -1,6 +1,3 @@
-// playerStats.js
-
-// Initialize player stats if not already in localStorage
 export const initializePlayerStats = (players) => {
     players.forEach(player => {
         // Try to retrieve stats from localStorage
@@ -36,35 +33,37 @@ export const updatePlayerStats = (spinner, target, result, prizeNumber, doubleDo
 
     // Update spinner stats
     spinnerStats.timesSpinner += 1;
+    targetStats.timesTargeted += 1;
+
     if (doubleDown) {
         spinnerStats.timesDoubledDown += 1; // Track double down
     }
 
+    console.log(result.option + result.type)
+
+    // Check the type of action
     if (result.type === 'self') {
         spinnerStats.selfSpins += 1;
-        spinnerStats.sipsReceived += getSipValue(result.option); // Spinner drinks for 'self'
-        // If spinner landed on self and target was chosen, target survived
         targetStats.targetSurvived += 1;
-    } else {
-        spinnerStats.sipsGiven += getSipValue(result.option); // Spinner gives sips or shots
-    }
-    if (result.option.includes('Shot')) {
-        spinnerStats.shotsGiven += getShotValue(result.option);
-    }
-    if (result.option.includes('Chug')) {
-        spinnerStats.chugsGiven += getChugValue(result.option);
-    }
 
-    // Update target stats
-    targetStats.timesTargeted += 1;
-    if (result.type === 'kill') {
-        targetStats.sipsReceived += getSipValue(result.option); // Target drinks for 'kill'
-    }
-    if (result.option.includes('Shot')) {
-        targetStats.shotsReceived += getShotValue(result.option);
-    }
-    if (result.option.includes('Chug')) {
-        targetStats.chugsReceived += getChugValue(result.option);
+        if (result.option.match(/Sip[s]?/i)) {
+            spinnerStats.sipsReceived += getValue(result.option);
+        } else if (result.option.match(/Shot[s]?/i)) {
+            spinnerStats.shotsReceived += getValue(result.option);
+        } else if (result.option.match(/Chug[s]?/i)) {
+            spinnerStats.chugsGiven += getValue(result.option);
+        }
+    } else {
+        if (result.option.match(/Sip[s]?/i)) {
+            targetStats.sipsReceived += getValue(result.option);
+            spinnerStats.sipsGiven += getValue(result.option);
+        } else if (result.option.match(/Shot[s]?/i)) {
+            targetStats.shotsReceived += getValue(result.option);
+            spinnerStats.shotsGiven += getValue(result.option);
+        } else if (result.option.match(/Chug[s]?/i)) {
+            targetStats.chugsReceived += getValue(result.option);
+            spinnerStats.chugsGiven += getValue(result.option);
+        }
     }
 
     // Save updated stats to localStorage
@@ -73,17 +72,7 @@ export const updatePlayerStats = (spinner, target, result, prizeNumber, doubleDo
 };
 
 // Helper function to get sip value from option
-const getSipValue = (option) => {
-    const match = option.match(/\d+/); // Extract the number of sips
+const getValue = (option) => {
+    const match = option.match(/\d+/);
     return match ? parseInt(match[0], 10) : 0;
-};
-
-// Helper function to get shot value from option
-const getShotValue = (option) => {
-    return option.includes('Shot') ? (option.includes('3 Shots') ? 3 : 1) : 0;
-};
-
-// Helper function to get chug value from option
-const getChugValue = (option) => {
-    return option.includes('Chug') ? (option.includes('Chug 2') ? 2 : 1) : 0;
 };
