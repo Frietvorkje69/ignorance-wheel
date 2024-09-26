@@ -51,7 +51,7 @@ export const updatePlayerStats = (spinner, target, result, prizeNumber, doubleDo
         } else if (result.option.match(/Shot[s]?/i)) {
             spinnerStats.shotsReceived += getValue(result.option);
         } else if (result.option.match(/Chug[s]?/i)) {
-            spinnerStats.chugsGiven += getValue(result.option);
+            spinnerStats.chugsReceived += getValue(result.option);
         }
     } else {
         if (result.option.match(/Sip[s]?/i)) {
