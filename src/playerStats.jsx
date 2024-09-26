@@ -3,8 +3,13 @@
 // Initialize player stats if not already in localStorage
 export const initializePlayerStats = (players) => {
     players.forEach(player => {
+        // Try to retrieve stats from localStorage
         const storedStats = localStorage.getItem(`playerStats-${player.name}`);
-        if (!storedStats) {
+        if (storedStats) {
+            // If stats exist, parse and assign them to the player
+            player.stats = JSON.parse(storedStats);
+        } else {
+            // If no stats exist, initialize them
             const initialStats = {
                 timesSpinner: 0,
                 timesTargeted: 0,
@@ -18,7 +23,8 @@ export const initializePlayerStats = (players) => {
                 chugsReceived: 0,
                 timesDoubledDown: 0,
             };
-            localStorage.setItem(`playerStats-${player.name}`, JSON.stringify(initialStats));
+            player.stats = initialStats; // Assign initialized stats to player
+            localStorage.setItem(`playerStats-${player.name}`, JSON.stringify(initialStats)); // Store in localStorage
         }
     });
 };
@@ -62,7 +68,7 @@ export const updatePlayerStats = (spinner, target, result, prizeNumber, doubleDo
     }
 
     // Save updated stats to localStorage
-    localStorage.setItem(`playerStats${spinner.name}`, JSON.stringify(spinnerStats));
+    localStorage.setItem(`playerStats-${spinner.name}`, JSON.stringify(spinnerStats));
     localStorage.setItem(`playerStats-${target.name}`, JSON.stringify(targetStats));
 };
 
@@ -81,4 +87,3 @@ const getShotValue = (option) => {
 const getChugValue = (option) => {
     return option.includes('Chug') ? (option.includes('Chug 2') ? 2 : 1) : 0;
 };
-

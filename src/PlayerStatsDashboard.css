@@ -1,0 +1,77 @@
+.dashboard-container {
+    background-color: #2c2c2c; /* Match the player block background color */
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5);
+    max-width: 1000px; /* Limit the max width for better appearance */
+    margin: 20px auto; /* Center the dashboard */
+    color: #fff; /* Text color */
+    overflow: auto; /* Allow scrolling if content exceeds the height */
+}
+
+.stats-table {
+    width: 100%; /* Full width */
+    border-collapse: collapse; /* Remove gaps between cells */
+    margin-top: 20px; /* Space from header */
+}
+
+.stats-table th, .stats-table td {
+    padding: 10px; /* Padding for table cells */
+    text-align: center; /* Center align text */
+    border-bottom: 1px solid #444; /* Bottom border for separation */
+    transition: background-color 0.3s ease; /* Smooth transition for hover effect */
+}
+
+.stats-table th {
+    background-color: #444; /* Header background color */
+    color: #fff; /* Header text color */
+}
+
+.stats-table tr {
+    transition: background-color 0.3s ease; /* Smooth transition */
+}
+
+.stats-table tr:hover {
+    background-color: rgba(77, 63, 136, 0.57); /* Light orange highlight for row hover */
+}
+
+.player-avatar-dashboard {
+    width: 40px; /* Smaller avatar width */
+    height: auto; /* Smaller avatar height */
+    object-fit: fill; /* Cover fit */
+}
+
+/* Back button styling */
+.back-button {
+    margin-top: 20px; /* Margin from table */
+}
+
+.back-button:hover {
+    background-color: #e63d00; /* Darker green on hover */
+}
+
+.positive {
+    color: #bfff72; /* Light green for given */
+    font-weight: bold;
+}
+
+.negative {
+    color: #e63d00; /* Light red for received */
+    font-weight: bold;
+}
+
+.no-color {
+    color: inherit; /* Inherit color from parent, or default */
+    font-weight: normal; /* Reset font weight */
+}
+
+.doubled-down {
+    color: #FFA500; /* Orange color for times doubled down */
+    font-weight: bold; /* Bold text for emphasis */
+}
+
+/* Adjust text color for hover */
+.stats-table tr:hover th,
+.stats-table tr:hover td {
+    color: inherit; /* Keep the text color same on hover */
+}

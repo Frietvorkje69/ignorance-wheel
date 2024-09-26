@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Wheel } from 'react-custom-roulette';
 import { initializePlayerStats, updatePlayerStats } from './playerStats'; // Import the functions
+import PlayerStatsDashboard from './PlayerStatsDashboard'; // Import the new dashboard component
 import './App.css';
 
 function App() {
@@ -181,9 +182,12 @@ function App() {
                         </div>
                     ))}
                 </div>
-                <button onClick={() => setLegacyMode(prev => !prev)} className="legacy-button">
-                    {legacyMode ? 'Switch to Modern' : 'Switch to Legacy'}
-                </button>
+                <div className="button-container">
+                    <button onClick={() => setLegacyMode(prev => !prev)} className="legacy-button">
+                        {legacyMode ? 'Switch to Modern' : 'Switch to Legacy'}
+                    </button>
+                    <button onClick={() => setStep(5)} className="dashboard-button">Statistics</button>
+                </div>
             </div>
         );
     }
@@ -303,6 +307,16 @@ function App() {
         resetGame()
 
         return null;
+    }
+
+    if (step === 5) { // Dashboard step
+        return (
+            <PlayerStatsDashboard
+                players={players}
+                onBack={() => setStep(1)} // Go back to main screen
+                legacyMode={legacyMode}
+            />
+        );
     }
 
     return null;
