@@ -43,7 +43,7 @@ const PlayerStatsDashboard = ({ players, onBack, legacyMode }) => {
 
     return (
         <div className="dashboard-container fade-in">
-            <h1>Player Stats Dashboard</h1>
+            <h1>Player Statistics</h1>
             <table className="stats-table">
                 <thead>
                 <tr>
