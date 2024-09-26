@@ -107,7 +107,7 @@ function App() {
 
         let rareEventTriggeredLocal = false; // Local variable to track the rare event
 
-        if (Math.random() < 0.7) { // 1/100 chance
+        if (Math.random() < 0.01) { // 1/100 chance
             preloadErrorImage(); // Preload the error image during the delay
             rareEventTriggeredLocal = true;
             setTimeout(() => {
