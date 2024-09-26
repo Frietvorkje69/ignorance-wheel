@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Wheel } from 'react-custom-roulette';
+import { initializePlayerStats, updatePlayerStats } from './playerStats'; // Import the functions
 import './App.css';
 
 function App() {
@@ -26,6 +27,7 @@ function App() {
             const response = await fetch('/players.json');
             const data = await response.json();
             setPlayers(data);
+            initializePlayerStats(data); // Initialize player stats after fetching players
         };
         fetchPlayers();
     }, []);
@@ -58,7 +60,6 @@ function App() {
             { option: doubleDown ? 'Chug 2' : 'Chug', type: 'kill', style: { backgroundColor: '#131313B2' } },
             { option: doubleDown ? 'Chug 2' : 'Chug', type: 'self', style: { backgroundColor: '#C70039' } },
             { option: doubleDown ? '3 Shots' : '1 Shot', type: 'self', style: { backgroundColor: '#4F7942' } }
-
         ];
     };
 
@@ -91,7 +92,6 @@ function App() {
         setDoubleDown(false);
         setRareEventTriggered(false);
         setRareEventClickable(false);
-
     };
 
     const spinWheel = () => {
@@ -112,11 +112,13 @@ function App() {
             }, 2000); // Show blue screen after 2 sec
         }
 
-
         setTimeout(() => {
             const result = getSegments()[randomPrizeNumber];
             setRouletteResult(result.option);
             setIsSpinning(false);
+
+            // Update the player stats after the result is determined
+            updatePlayerStats(spinner, target, result, prizeNumber, doubleDown);
         }, 11500);
     };
 
@@ -148,7 +150,6 @@ function App() {
 
     const closeResultModal = () => {
         setStep(4);
-
     };
 
     const handleDoubleDown = () => {
