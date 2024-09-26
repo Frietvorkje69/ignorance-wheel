@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Wheel } from 'react-custom-roulette';
-import { initializePlayerStats, updatePlayerStats } from './playerStats'; // Import the functions
+import { initializePlayerStats, updatePlayerStats, rareEventIncrement } from './playerStats'; // Import the functions
 import PlayerStatsDashboard from './PlayerStatsDashboard'; // Import the new dashboard component
 import './App.css';
 
@@ -68,7 +68,7 @@ function App() {
         <Wheel
             mustStartSpinning={spinStarted}
             prizeNumber={prizeNumber}
-            data={getSegments()} // Call the function to get the updated segments
+            data={getSegments()}
             textColors={['#ffffff']}
             textDistance={65}
             onStopSpinning={() => {
@@ -105,10 +105,14 @@ function App() {
         setIsSpinning(true);
         setSpinCompleted(false);
 
-        if (Math.random() < 0.01) { // 1/100 chance
+        let rareEventTriggeredLocal = false; // Local variable to track the rare event
+
+        if (Math.random() < 0.7) { // 1/100 chance
             preloadErrorImage(); // Preload the error image during the delay
+            rareEventTriggeredLocal = true;
             setTimeout(() => {
                 setRareEventTriggered(true);
+                rareEventIncrement(players, spinner, target); // Increment shotsReceived for all players
                 setTimeout(() => setRareEventClickable(true), 15000); // Enable clicking after 15 seconds
             }, 2000); // Show blue screen after 2 sec
         }
@@ -118,8 +122,9 @@ function App() {
             setRouletteResult(result.option);
             setIsSpinning(false);
 
-            // Update the player stats after the result is determined
-            updatePlayerStats(spinner, target, result, prizeNumber, doubleDown);
+            if (!rareEventTriggeredLocal) {
+                updatePlayerStats(spinner, target, result, prizeNumber, doubleDown);
+            }
         }, 11500);
     };
 

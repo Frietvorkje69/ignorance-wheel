@@ -71,6 +71,25 @@ export const updatePlayerStats = (spinner, target, result, prizeNumber, doubleDo
     localStorage.setItem(`playerStats-${target.name}`, JSON.stringify(targetStats));
 };
 
+export const rareEventIncrement = (players, spinner, target) => {
+    players.forEach(player => {
+        const playerStats = JSON.parse(localStorage.getItem(`playerStats-${player.name}`));
+        if (playerStats) {
+            playerStats.shotsReceived += 1;
+            localStorage.setItem(`playerStats-${player.name}`, JSON.stringify(playerStats));
+        }
+    });
+    const spinnerStats = JSON.parse(localStorage.getItem(`playerStats-${spinner.name}`));
+    const targetStats = JSON.parse(localStorage.getItem(`playerStats-${target.name}`));
+
+    spinnerStats.timesSpinner += 1;
+    targetStats.timesTargeted += 1;
+
+    localStorage.setItem(`playerStats-${spinner.name}`, JSON.stringify(spinnerStats));
+    localStorage.setItem(`playerStats-${target.name}`, JSON.stringify(targetStats));
+};
+
+
 // Helper function to get sip value from option
 const getValue = (option) => {
     const match = option.match(/\d+/);
