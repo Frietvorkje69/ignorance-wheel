@@ -1,0 +1,43 @@
+[
+  {
+    "id": 1,
+    "name": "Luke",
+    "aliveSprite": "/img/sprites/luke/lukeAlive.png",
+    "deadSprite": "/img/sprites/luke/lukeDead.png",
+    "legacyAliveSprite": "/img/sprites/luke/legacyLukeAlive.png",
+    "legacyDeadSprite": "/img/sprites/luke/legacyLukeDead.png"
+  },
+  {
+    "id": 2,
+    "name": "Ellesse",
+    "aliveSprite": "/img/sprites/ell/ellalive.png",
+    "deadSprite": "/img/sprites/ell/elldead.png",
+    "legacyAliveSprite": "/img/sprites/missing.png",
+    "legacyDeadSprite": "/img/sprites/missing.png"
+  },
+  {
+    "id": 3,
+    "name": "Fabio",
+    "aliveSprite": "/img/sprites/fabio/fabioalive.png",
+    "deadSprite": "/img/sprites/fabio/fabiodead.png",
+    "legacyAliveSprite": "/img/sprites/missing.png",
+    "legacyDeadSprite": "/img/sprites/missing.png"
+  },
+  {
+    "id": 4,
+    "name": "Kevin",
+    "aliveSprite": "/img/sprites/kevin/kevinAlive.png",
+    "deadSprite": "/img/sprites/kevin/kevinDead.png",
+    "legacyAliveSprite": "/img/sprites/kevin/legacyKevinAlive.png",
+    "legacyDeadSprite": "/img/sprites/kevin/legacyKevinDead.png"
+  },
+
+  {
+    "id": 5,
+    "name": "Sasha",
+    "aliveSprite": "/img/sprites/sasha/sashalive.png",
+    "deadSprite": "/img/sprites/amber/sashadead.png",
+    "legacyAliveSprite": "/img/sprites/missing.png",
+    "legacyDeadSprite": "/img/sprites/missing.png"
+  }
+]
