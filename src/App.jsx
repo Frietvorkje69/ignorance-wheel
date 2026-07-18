@@ -25,7 +25,7 @@ function App() {
 
     useEffect(() => {
         const fetchPlayers = async () => {
-            const response = await fetch('/players.json');
+            const response = await fetch('/Players2.json');
             const data = await response.json();
             setPlayers(data);
             initializePlayerStats(data); // Initialize player stats after fetching players
